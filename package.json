@@ -34,7 +34,7 @@
   "permissions":{
     "id-token": "write"
   },
-  "homepage": "https://mfarina122.github.io/magicdatabase5",
+  "homepage": ".",
   "browserslist": {
     "production": [
       ">0.2%",
