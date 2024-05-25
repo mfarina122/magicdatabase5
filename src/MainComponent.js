@@ -3,10 +3,11 @@ import './App.css';
 import { Autocomplete, Backdrop, Box, Button, CircularProgress, Select, TextField, ThemeProvider, Typography, createTheme } from '@mui/material';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import { getAllSpells } from './api';
+import { getAllSpells, getSpellsByClass } from './api';
 import { StyledTextfield } from './StyledTextfield';
 import MagicModal from './MagicModal';
 import magoPhoto from '../src/mago.jpg';
+import SwipeableTextMobileStepper from './SwipeableTextMobileStepper';
 
 const styles = {
     sectioncontainer: {
@@ -14,7 +15,7 @@ const styles = {
         borderRadius: '6px',
         marginBottom: '10px',
         paddingBottom: '10px',
-        height:'100vh',
+        //height:'100vh',
         //background: "linear-gradient(0deg,  rgba(242,242,242,0) 100%,rgba(242,242,242,1) 27%)",
         //backdropFilter: "blur(16px)"
     },
@@ -79,14 +80,35 @@ export default function MainComponent() {
         if(e !== null)
         setselectedSpellURL(e.url);
     }
+    const changeClassValue = (className) => {
+      setLoading(true);
+      if(className === ''){
+        getAllSpells().then((spells) => {
+          setMagics(spells.results.sort((a,b) => a.level - b.level));
+          setLoading(false);
+      }).catch((error) => {
+          alert("Caricamento fallito");
+      })
+      }
+      else{
+        getSpellsByClass(className).then((spells) => {
+          setMagics(spells.results.sort((a,b) => a.level - b.level));
+          setLoading(false);
+        }).catch((error) => {
+          alert("Caricamento fallito");
+        })
+      }
+    }
 
     return <div style={{
         textAlign: 'center',
         color: 'black',
         padding: '26px',
-        backgroundImage: "url("+magoPhoto+")",
-        backgroundSize:"cover",
-        height:'100vh',
+        /*backgroundImage: "url("+magoPhoto+")",
+        backgroundSize:"cover",*/
+        background:"linear-gradient(#4ecdc4, #556270)",
+        height:'100%'
+        //height:'100vh',
     }} >
     <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -102,10 +124,12 @@ export default function MainComponent() {
 
                                                 </Select>*/}
                                                 <ThemeProvider theme={theme}>
+                                               
     <Autocomplete id="magic"
       sx={{ width: '100%' }}
       options={magics}
       autoHighlight
+      noOptionsText="No spells found for this class"
       isOptionEqualToValue={(option, value) => option.name === value.name}
       getOptionLabel={(option) => option.name}
       onChange={(event, newValue) => {
@@ -133,6 +157,7 @@ export default function MainComponent() {
 
       </Autocomplete>
       </ThemeProvider>
+      <SwipeableTextMobileStepper changeClassValue={changeClassValue}></SwipeableTextMobileStepper>
                 </Grid>
             </Grid>
            {open ? <MagicModal open={open} spellURL={selectedSpellURL} onClose={handleModalClose}></MagicModal> : null}

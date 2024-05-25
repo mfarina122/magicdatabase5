@@ -3,7 +3,7 @@
 }
 
 .App-logo {
-  height: 40vmin;
+  /*height: 40vmin;*/
   pointer-events: none;
 }
 
@@ -11,9 +11,6 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
-}
-html{
-  height:100dvh
 }
 #magic-label{
   color:white;
@@ -24,10 +21,23 @@ html{
 .css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline:hover{
   border-color: white;
 }
-
+/*html{
+  height:100%;
+}*/
+@media (max-width: 768px) {
+  body {
+      height: calc(100vh - 50px);
+  }
+}
+#root{
+  height: inherit;
+}
+.App{
+  height:inherit;
+}
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  /*min-height: 100vh;*/
   display: flex;
   flex-direction: column;
   align-items: center;
